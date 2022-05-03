@@ -91,7 +91,7 @@ The other possible cause of the spread in the pulse shape is the presence of pha
 
 \subsection{Switch to off-table laser}
 
-Due to the dispersion apparent with the Horiba laser, it was decided to switch to the Spectraphysics laser source which had a reliable sync pulse signal. However, this laser at the time was mounted on a separate table, and was unable to be moved due to it's usage in a separate experiment. In order to use the laser, a setup was devised using a multi-mode fiber coupled to the Spectraphysics laser with a simple mount that allowed the laser to shine directly onto the fiber input and couple the beam into it. This fiber was then routed to the original laser table and mounted to have its output shine directly onto a similar sequence of mirrors and and ND filter as before. Fig.\ref{fig:nkt_fiber_coupling} shows the coupling of the Spectraphysics laser into the fiber, which then is routed up through the roof of the lab and then down onto the original laser table as shown in Fig.\ref{fig:fiber_output}
+Due to the dispersion apparent with the Horiba laser, it was decided to switch to the Spectraphysics laser source which had a reliable sync pulse signal. However, this laser at the time was mounted on a separate table, and was unable to be moved due to it's usage in a separate experiment. In order to use the laser, a setup was devised using a fiber cable coupled to the Spectraphysics laser with a simple mount that allowed the laser to shine directly onto the fiber input and couple the beam into it. This fiber was then routed to the original laser table and mounted to have its output shine directly onto a similar sequence of mirrors and and ND filter as before. Fig.\ref{fig:nkt_fiber_coupling} shows the coupling of the Spectraphysics laser into the fiber, which then is routed up through the roof of the lab and then down onto the original laser table as shown in Fig.\ref{fig:fiber_output}
 
 \begin{figure}[!htb]
      \centering
@@ -118,7 +118,7 @@ Due to the dispersion apparent with the Horiba laser, it was decided to switch t
          \vfill
          \end{minipage}
      \end{subfigure}
-        \caption{Multi-mode fiber setup}
+        \caption{Fiber coupled laser setup}
         \label{fig:fiber}
 \end{figure}
 
@@ -132,36 +132,70 @@ The short beginning pulse was theorized to be cause by laser light coming from t
 
 To test whether this scattered light from the table was the cause of the early initial pulse, the aperture was shielded from any laser light coming from any source other than the fiber. Initially, a person stood between the two tables to block the non-fiber light, and the resulting histogram was Fig.\ref{fig:fiber_graph_hand}. It clearly shows an almost complete removal of the initial pulse. The cross-table bounce then serves as a satisfactory explanation for the initial pulse, however the 2 other pulses must now be accounted for.
 
-The suspected cause of the 2 other pulses is modal dispersion, as the fiber used was a multi-mode fiber. An additional factor leading this to be suspected is that upon close visual inspection of the laser light output from the fiber, multiple different interference patterns were visible, indicative that the laser pulse was exciting multiple modes within the fiber simultaneously. The result of such multi-mode propagation is that, due to differences in propagation velocity of different modes, the arrival time of the pulse carried by each mode will be different, and the output will be the superposition of each mode's transmission.
+%%%The suspected cause of the 2 other pulses is modal dispersion, as the fiber used was a multi-mode fiber. An additional factor leading this to be suspected is that upon close visual inspection of the laser light output from the fiber, multiple different interference patterns were visible, indicative that the laser pulse was exciting multiple modes within the fiber simultaneously. The result of such multi-mode propagation is that, due to differences in propagation velocity of different modes, the arrival time of the pulse carried by each mode will be different, and the output will be the superposition of each mode's transmission.
 
 %
-%Put the multi-mode fiber analysis
+%Put the multi-mode fiber analysis here
 %
-
-A more elaborate shielding setup was devised using black cardstock to cover the SPAD, however the multi-mode dispersion was not able to be reduced and so the setup was unsatisfactory.
 
 \begin{figure}[!htb]
      \centering
      \begin{subfigure}[b]{1.0\textwidth}
          \centering
          \includegraphics[width=\textwidth]{figures/550_no_hand.PNG}
-         \caption{Histogram results with no shielding}
+         \caption{Histogram results with no shielding, note initial spurious pulse}
          \label{fig:fiber_graph_no_hand}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{1.0\textwidth}
          \centering
          \includegraphics[width=\textwidth]{figures/550-actually covered.PNG}
-         \caption{Histogram with shielding}
+         \caption{Histogram with shielding, first spurious pulse attenuated}
          \label{fig:fiber_graph_hand}
      \end{subfigure}
-        \caption{Multi-mode fiber  back-reflection and dispersion}
+        \caption{Fiber setup with multiple back reflection paths}
         \label{fig:fiber_graphs}
+\end{figure}
+
+A more elaborate shielding setup was devised using black cardstock to cover the SPAD, in order to determine if the second, longer duration pulse was also due to the many sources of laser reflections from the other table, and if so attenuate them. It is expected that the third, highest intensity, and shortest duration pulse will be the pulse coming through the fiber, as the output is directed right at the SPAD and should have much higher intensity, and less duration compared with the sum of the multiple reflection sources.
+The shielding used was a simple cover of black cardstock along with some cardboard boxes and packing material to ensure the SPAD aperture was not directly visible to any laser light that might be coming from the back table, and any other ambient light as well. The setup can be seen in Fig.\ref{fig:fiber_shielded_front}.
+
+%\begin{figure}[!htb]
+%     \centering
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \centering
+%         \includegraphics[angle=270,origin=c,width=\textwidth]{figures/IMG_6135.jpg}
+%         \caption{Full shielding setup, facing away from table with laser}
+%         \label{fig:fiber_shielded_front}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{figures/IMG_6136.jpg}
+%         \caption{Full shielding setup, side view}
+%         \label{fig:fiber_shielded_side}
+%     \end{subfigure}
+%        \caption{Fiber setup with shielding}
+%        \label{fig:fiber_shield}
+%\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[angle=270,origin=c,width=\textwidth]{figures/IMG_6135.jpg}
+\caption{\label{fig:fiber_shielded_front}Full shielding setup, facing away from table with laser}
+\end{figure}
+
+The results of a measurement after the addition of this shielding indicate that all the pulses with the exception of the high intensity short duration pulse, as expected, were the result of back-reflections from the back wall and other optical elements on the other table. The histogram from this measurement is shown in Fig.\ref{fig:fiber_output_shielded}. It appears to have by inspection a FWHM of 0.4-0.5ns which is significantly longer still than the promised 0.4ps, although the pulse appears now much closer to gaussian, as is the pulse shape of the laser. Phase noise of the sync pulse is the expected cause of this error, though in future data should be recorded concerning the behaviour of the sync pulse to determine how much it contributes to the total error and pulse spreading.
+
+\begin{figure}
+\centering
+\includegraphics[width=1.0\textwidth]{figures/pulse_clear.PNG}
+\caption{\label{fig:fiber_output_shielded}Pulse measurement showing much cleaner pulse than Fig.\ref{fig:fiber_graphs}}
 \end{figure}
 
 \subsection{Setup with NKT laser on same table}
 
-After the issues with the previous setup due to coupling with the fiber causing spreading, and an NKT laser being freed up from its previous usage in another setup, the NKT laser was moved to the same table as where the photon counting equipment and SPAD reside. This allowed the laser pulse to be routed directly from the output aperture through just a few optical elements before arriving at the SPAD detector.
+After the issues with the previous setup not giving the desired accuracy to the input pulse, and an NKT laser being freed up from its previous usage in another setup, the NKT laser was moved to the same table as where the photon counting equipment and SPAD reside. This allowed the laser pulse to be routed directly from the output aperture through just a few optical elements before arriving at the SPAD detector.
 
 Beneath the laser table was placed the NKT super-continuum laser source shown in Fig.\ref{fig:super_continuum}, with the laser signal routed up to the table to a variable band-pass filter in Fig.\ref{fig:band_pass}, allowing the entire setup to act as a variable wavelength narrow-band laser source.
 
@@ -307,6 +341,6 @@ They begin with the proof that the bispectrum is unaffected by a time shift in T
 \section{Data processing and FWHM calculation Python script}
 \verbatiminput{full_width_half_max.py}
 \section{Triple correlation example MATLAB/OCTAVE script}
-\verbatiminput{full_width_half_max.py}
+\verbatiminput{triple_correlation.m}
 
 \end{document}
