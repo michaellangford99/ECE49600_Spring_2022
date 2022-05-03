@@ -16,10 +16,14 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{float}
+\usepackage[title]{appendix}
+\usepackage[style=verbose]{biblatex}
 
 %% matlab
 \usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
 \usepackage{verbatim}
+
+\addbibresource{sample.bib}
 
 \title{ECE49600 Undergrad Research Semester Report \\
   \large Photon counting for super-resolution imaging \\
@@ -36,13 +40,14 @@
 During the course of the semester, I worked to prepare for super resolution imaging lab experiments using photon counting apparatus via lab work conducting initial tests, and analyzing the resulting data. In addition to the experimental work I reviewed literature relating to photon counting and work with potential application to photon counting / super-resolution experiments planned for our group.
 
 I was able to assist in conducting multiple tests of the photon counting equipment, with the goal validating its operation and characterizing its behaviour. The goal is to use this device in more complex setups for super-resolution imaging experiments. The equipment is newly acquired however, so it is first necessary to become acquainted with it and ensure it is operating within the advertised parameters. 
-The tests primarily consist of using the photon counting equipment to measure the pulse shape of a pulsed laser and working to ensure the measured pulse matches, as closely as possible through iteration of experiments, the proscribed pulse shape from the pulsed laser.
+The tests primarily consist of using the photon counting equipment to measure the pulse shape of a pulsed laser and working to ensure the measured pulse matches, as closely as possible through iteration of experiments, the proscribed pulse shape from the pulsed laser. The more accurate the measurement of the pulse, the better we will be able to perform more complex experiments.
 
 This device should be very useful in the future for multiple experiments where time-correlation of laser signals are desired, as this device is very helpful for collecting this information. In particular, we are interested in using photon counting devices to create a Hanburry Brown-Twiss Interferometer to access higher order correlation information. 
 In the characterization of the hardware, multiple setups were used as issues were debugged and solutions found. I present the details of each setup as well as an analysis of the results of the experiments for each setup, and recommendations to improve the performance of the equipment for future usage in more complex experiments.
 
-In reviewing published material, I read multiple papers with relevance to photon counting and super-resolution imaging, and learned about the various ways that super-resolution imaging is being done, and particularly how photon-counting is applicable to it. I detail what I learned from each paper and a high level overview of it, with an explanation of why it is of particular interest and how it might be useful to the group. 
+In reviewing published material, I read multiple papers with relevance to photon counting and super-resolution imaging, and learned about the various ways that super-resolution imaging is being done, and particularly how photon-counting is applicable to it.
 In particular, I did a more in depth analysis of the math and algorithm described in a paper written on higher order correlations with relevance to photon counting, as the algorithm can be used on the output gathered from a Hanburry Brown-Twiss Interferometer, which may use be implemented via photon-counting. I worked to understand better the implications of the algorithm they describe, and the math of higher order correlations.
+I detail what I learned from the paper and a high level overview of it, with an explanation of why it is of particular interest and how it might be useful to the group.
 
 \end{abstract}
 
@@ -52,7 +57,7 @@ In particular, I did a more in depth analysis of the math and algorithm describe
 
 My lab work this semester focused on testing the photon counting equipment to prepare for super-resolution experiments where photon-counting data is required. Thus my work consists of a set of tests of the photon counting equipment as we gained more understanding of the device's operation and fixed issues contributing to error in the photon counting measurement.
 
-The exact goal of this set of experiments is to direct a pulsed laser beam into the SPAD aperture, measure the resulting pulse waveform using the photon counting equipment, and then analyze the data and determine how closely the measured pulse matches the proscribed pulse shape of the pulsed laser waveform. The closer this measurement to the real pulsed laser waveform, the more accurate we can say the photon counting equipment is. Therefore with each setup the goal is to remove possible sources of noise, error, distortion, etc. to determine just how to accurately measure a pulse waveform so that future measurements can be as accurate to the true waveforms as possible.
+The exact goal of this set of experiments is to direct a pulsed laser beam into the SPAD aperture, measure the resulting pulse waveform using the photon counting equipment, and then analyze the data and determine how closely the measured pulse matches the proscribed pulse shape of the pulsed laser waveform. The closer this measurement to the real pulsed laser waveform, the more accurate we can say the photon counting equipment is. Therefore with each setup the goal is to remove possible sources of noise, error, distortion, etc. to learn how to accurately measure a pulse waveform so that future measurements can be as accurate to the true waveforms as possible.
 
 The photon counting equipment itself consists of a main control box that interfaces to a laptop, and the sensor, which is a SPAD (Single Photon Avalanche Diode) detector mounted within a containing aperture and additional integrated supporting electronics. The photon counting control box connects to the SPAD detector and a laptop, as well as a sync pulse cable coming from the pulsed laser source. This sync pulse allows the photon counting equipment to synchronize its measurements in time to the beginning of a laser pulse.
 
@@ -93,7 +98,7 @@ The other possible cause of the spread in the pulse shape is the presence of pha
 
 Due to the dispersion apparent with the Horiba laser, it was decided to switch to the Spectraphysics laser source which had a reliable sync pulse signal. However, this laser at the time was mounted on a separate table, and was unable to be moved due to it's usage in a separate experiment. In order to use the laser, a setup was devised using a fiber cable coupled to the Spectraphysics laser with a simple mount that allowed the laser to shine directly onto the fiber input and couple the beam into it. This fiber was then routed to the original laser table and mounted to have its output shine directly onto a similar sequence of mirrors and and ND filter as before. Fig.\ref{fig:nkt_fiber_coupling} shows the coupling of the Spectraphysics laser into the fiber, which then is routed up through the roof of the lab and then down onto the original laser table as shown in Fig.\ref{fig:fiber_output}
 
-\begin{figure}[!htb]
+\begin{figure}
      \centering
      \begin{subfigure}[t]{0.25\textwidth}
          \centering
@@ -138,7 +143,7 @@ To test whether this scattered light from the table was the cause of the early i
 %Put the multi-mode fiber analysis here
 %
 
-\begin{figure}[!htb]
+\begin{figure}
      \centering
      \begin{subfigure}[b]{1.0\textwidth}
          \centering
@@ -153,7 +158,14 @@ To test whether this scattered light from the table was the cause of the early i
          \caption{Histogram with shielding, first spurious pulse attenuated}
          \label{fig:fiber_graph_hand}
      \end{subfigure}
-        \caption{Fiber setup with multiple back reflection paths}
+     \hfill
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/pulse_clear.PNG}
+         \caption{Pulse measurement showing much cleaner pulse than Fig.\ref{fig:fiber_graphs}}
+         \label{fig:fiber_output_shielded}
+     \end{subfigure}
+        \caption{Fiber setup initially with multiple back reflection paths}
         \label{fig:fiber_graphs}
 \end{figure}
 
@@ -181,17 +193,11 @@ The shielding used was a simple cover of black cardstock along with some cardboa
 
 \begin{figure}
 \centering
-\includegraphics[angle=270,origin=c,width=\textwidth]{figures/IMG_6135.jpg}
+\includegraphics[angle=270,origin=c,width=0.5\textwidth]{figures/IMG_6135.jpg}
 \caption{\label{fig:fiber_shielded_front}Full shielding setup, facing away from table with laser}
 \end{figure}
 
 The results of a measurement after the addition of this shielding indicate that all the pulses with the exception of the high intensity short duration pulse, as expected, were the result of back-reflections from the back wall and other optical elements on the other table. The histogram from this measurement is shown in Fig.\ref{fig:fiber_output_shielded}. It appears to have by inspection a FWHM of 0.4-0.5ns which is significantly longer still than the promised 0.4ps, although the pulse appears now much closer to gaussian, as is the pulse shape of the laser. Phase noise of the sync pulse is the expected cause of this error, though in future data should be recorded concerning the behaviour of the sync pulse to determine how much it contributes to the total error and pulse spreading.
-
-\begin{figure}
-\centering
-\includegraphics[width=1.0\textwidth]{figures/pulse_clear.PNG}
-\caption{\label{fig:fiber_output_shielded}Pulse measurement showing much cleaner pulse than Fig.\ref{fig:fiber_graphs}}
-\end{figure}
 
 \subsection{Setup with NKT laser on same table}
 
@@ -258,10 +264,78 @@ The result of this analysis is a FWHW of 100 ps. The advertised FWHM pulse durat
 
 \subsection{Temporal dispersion \& error origin analysis}
 
-Upon review of the laser pulse measurement, there is a clear disparity between the measured pulse width and the advertised pulse width from the laser manual, as the measured pulse width is 100ps, and the advertised width is 5ps. A possible reason for this is temporal dispersion caused by photons bouncing off of the ND filter in front of the SPAD aperture and then off other optical equipment, and then back into the SPAD.
+Upon review of the laser pulse measurement, there is a clear disparity between the measured pulse width and the advertised pulse width from the laser manual, as the measured pulse width is 100ps, and the advertised width is 5ps. There are a number of suspected sources of error causing this dispersive error, such as phase noise in the electrical sync pulse, phase noise in the laser pulse itself, vibration, and multiple path back reflections. Each are investigated to determine which could be a dominant cause of error in the measurement, as well as to determine possible solutions.
+\newline
 
-To investigate this, the dimensions of the most likely bounce path were measured and the traversal time the would elapse for it to cover that distance were calculated.
-The most likely bounce path appears to be approx. 20 inches, based off a 1 inch hole spacing on the laser table, and the path as shown in Fig.\ref{fig:light_path_measured}.
+To better understand the properties of the system resulting in this dispersion of the pulse signal, a simple deconvolution was performed on the measured data to recover an approximation of the temporal point spread function (PSF) of the system. From this PSF multiple conclusions can be drawn about the nature of the system and the origins of the error.
+
+The mathematics for a simpler, more naive approach to deconvolution are not very complex, and essentially only entail solving for the PSF in the s-domain. The Laplace transform allows algebraic manipulation of the functions in the s-domain when convolution occurs in the time domain.
+
+\[
+z_{measurement} (t) = x_{pulse} (t) \ast psf (t)
+\]
+\[
+\mathcal{L}\{z_{measurement} (t)\} = \mathcal{L}\{x_{pulse} (t) \ast psf (t)\}
+\]
+\[
+Z_{measurement} (s) = X_{pulse} (s) \cdot PSF (s)
+\]
+\[
+PSF (s) = \frac{Z_{measurement} (s)}{X_{pulse} (s)}
+\]
+Evaluation along the \(j\omega\) axis allows use the Fourier transform, and in the discrete time domain the FFT \& iFFT.
+ \[
+PSF (j\omega) = \frac{Z_{measurement} (j\omega)}{X_{pulse} (j\omega)}
+\]
+ \[
+psf (t) = \mathcal{F}^{-1}\{\frac{Z_{measurement} (j\omega)}{X_{pulse} (j\omega)}\}
+\]
+\[
+psf (t) = \mathcal{F}^{-1}\{\frac{\mathcal{F}\{z_{measurement} (t)\}}{\mathcal{F}\{x_{pulse} (t)\}}\}
+\]
+
+This solution for finding the pulse was then implemented in Matlab/Octave. The signal was first imported in .csv format from the output of the python script that processed the raw data from the SPAD, then interpolated to allow for a smooth approximation of the laser pulse  input (the time step output from the SPAD was too close to  size of the laser pulse). Next an estimate of the input laser pulse was calculated using a gaussian pulse shape to approximate the unknown physical pulse shape, as a gaussian is the expected pulse shape of a properly operating laser. Then FFTs were taken of both the simulated input signal and the measured output signal. 
+
+To prevent division by very small numbers, the FFT of the measured signal was truncated by setting to zero all sections of the data where the pulse FFT intensity was below 0.002\% of the max intensity of the pulse FFT, and then any NaN or Inf values within the PSF FFT after the complex division operation were set to zero.
+
+With all invalid data removed, the inverse FFT of the PSF FFT was taken to get the time domain PSF \(psf(t)\).  The completed script output the FWHM of the PSF as a sanity check to compare with the python script result, the FFT of each signal involved, the simulated pulse waveform, and the PSF and measured output graphed on the same plot.
+The truncation operation is visible in Fig.\ref{fig:deconvolution_ffts}, as both the original FFT and the truncated FFT are shown. This allows calculation of the PSF without massive high-frequency noise signals swamping the smaller data in the valid range (lower frequency) resulting from the signal part of the FFT spectrum.
+The simulated pulse shape assumed in this analysis is shown in Fig.\ref{fig:deconvolution_pulse}, showing the ideal gaussian pulse utilized.
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+        \includegraphics[width=1.0\textwidth]{figures/matlab_deconvolution_all_signals_FFT.jpg}
+         \caption{FFTs of signals in the deconvolution process}
+         \label{fig:deconvolution_ffts}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+         \includegraphics[width=1.0\textwidth]{figures/matlab_deconvolution_pulse.jpg}
+         \caption{Simulated pulse shape used in deconvolution process}
+         \label{fig:deconvolution_pulse}
+     \end{subfigure}
+        \caption{Deconvolution results}
+        \label{fig:deconvolution_graphs}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1.0\textwidth]{figures/matlab_deconvolution_all_signals.jpg}
+\caption{\label{fig:deconvolution_time_domain}Resulting time domain graph of PSF and measured signal}
+\end{figure}
+
+Fig.\ref{fig:deconvolution_time_domain} shows the PSF and the original measured pulse alongside each other. This graph gives the most useful information about the nature of the system. The PSF's primary pulse appears to be mostly gaussian, with only one major pulse, and one much weaker pulse of similar shape. The pulses are much stronger than the noise surrounding the signals, which demonstrates a good SNR in terms of any ambient light reaching the detector. The presence of the 2 pulses indicates there is some sort of back reflection occurring that results in a temporal delay of approx. 3.056ns.
+
+The fact that the the pulses shapes are gaussian and mostly symmetrical indicates the presence of random noise as the source of the temporal dispersion that the PSF shows. Due to the PSF being a gaussian in particular, this would mean a time invariant IID random process being the source of the noise. Some noise sources that have this property would be phase noise in the electrical sync pulse signal, phase noise in the laser pulse itself, and vibration on the laser table.
+\newline
+
+A possible explanation of the second pulse is back reflections caused by photons bouncing off of the ND filter in front of the SPAD aperture and then off other optical equipment, and then back into the SPAD.
+
+To investigate this, the dimensions of the most likely bounce path were measured and the traversal time the would elapse for it to cover that distance were calculated. Then these times can be compared to the measured 3.06ns bounce time predicted by the calculated PSF.
+The most likely bounce paths appear to be approx. 20 inches, 15 inches, and 1 inch, based off a 1 inch hole spacing on the laser table, and the paths are shown in Fig.\ref{fig:light_path_measured}.
 
 %
 % [!htb]
@@ -286,41 +360,78 @@ The most likely bounce path appears to be approx. 20 inches, based off a 1 inch 
         \label{fig:light_path_all}
 \end{figure}
 
-Using the approximate measurements from the pictures of the setup, we get a traversal time from the ND filter back to the 45 degree mirror of 2.54ns (the most likely bounce path upon inspection of the light reflecting off the sides).
+Using the approximate measurements from the pictures of the setup, we get traversal times based upon the following equation, showing the results for each possible path length.
 
 \[
-\Delta T=15\ in * 2 * \frac{2.54\ cm}{1\ in} * \frac{1\ m}{100\ cm} * \frac{1}{c} = 2.54 ns
+\Delta T=\\
+\begin{bmatrix}
+20\\
+15\\
+1\\
+21\\
+\end{bmatrix}
+\ in * 2 * \frac{2.54\ cm}{1\ in} * \frac{1\ m}{100\ cm} * \frac{1}{c} = \\
+\begin{bmatrix}
+3.3867\\
+2.5400\\
+0.1693\\
+3.5560\\
+\end{bmatrix}
+ns
 \]
 
-While this is on a similar scale to the FWHM measured as 100ps, it is too large to have caused a spreading from 5ps to 100ps, as that would mean a point spread function with temporal width of 95ps. 
+Both the 20" and 15" paths are close to the expected 3ns bounce time as calculated from the PSF - both of which are likely candidates for back reflections based on observed diffuse laser light present at those locations during the measurements. This seems to be a satisfactory explanation for the second pulse and its 3ns relative delay.
 
-Although it appears this is not the cause of the disparity in pulse width measurements, another (and much shorter) bounce path could be between the aperture of the photon counter and the ND filter, though the likelihood is much lower due to better attenuation from the surface of the photon counter. The distance in this case is approximately 0.5", which yields via the previous equation a bounce time from aperture to ND filter and back of 85ps, which is much closer to the 95 ps expected for the bounce time. However, due to that being the only possible bounce path, and having no shorter ones available , the expected pulse as a result of that would be a convolution of the input pulse and 2 impulses, one at t=0ps, and another at t=85ps (or whatever the true bounce time is). This would merely duplicate the pulse at each impulse, rather than spreading out the pulse over the entirety of the time segment from t=0 to t=85ps.
+With the multiple pulses explained, the origin of the noise causing the pulse spread shown by the PSF for both pulses must be discussed. Since it is expected that it is a time invariant IID random process, these would be phase noise in the electrical sync pulse signal, phase noise in the laser pulse itself, and vibration on the laser table. As discussed in the explanation of the operation of the SPAD, any phase noise or variation in the arrival of the edge of the sync pulse will result in the temporal reference point for the timestamp of a photon arrival being improperly placed relative to the actual pulse timestamp, and variation in this error over time results in spreading of the pulse measurement.
+Likewise, any presence of this noise in the actual laser signal would have the same result, although due to the opposite effect, where the electrical signal gave the true timestamp and the pulse was not synchronized properly.
+If either is present these would contribute to each other with the resulting PSF from the phase noise being the convolution of the individual PSFs from the resepective delays - the PSF from phase noise being a gaussian, as the ensemble of random IID measurements of a uniform pdf random variable is a gaussian distribution.
 
-For the above reasons, it appears that the bounce analysis does not conclusively account for the spreading of the laser pulse, although it may be affecting the pulse shape to a lesser degree. Other sources of error into the system must be analyzed to properly account for the source of this dispersion.
+Aside from phase noise in the electrical or optical pulse, vibration is a possible source of dispersive error. Similar to the improper binning resulting from phase noise, if the SPAD, as well as the laser, is susceptable to environmental vibration, the detector will vary in its position relative to the mean position of the detector along the path of the laser beam. This will result in photon arrival being either delayed or advanced by the change in the detector position. However, by rearranging the equation used to determine the bounce times of various paths, and solving for distance using a time delta of 0.12ns, it would require a maximum vibration delta or +/- 1.4 in. to result in as wide of a PSF as seen here. As a result, vibration seems to be an extremely unlikely source of error.
+
+\subsection{Future steps, recommendations}
+
+After analyzing the results of each lab setup and the implications of the data, there are some goals and planned experiments for future labwork related to these experiments. For each setup, there was significant temporal dispersion, and while the best explanation available is phase noise in the electrical sync pulse signal, it is not very satisfactory to merely chalk it all up to that noise source. It is not yet known what the magnitude of the contribution of this error is, and therefore may not be the dominant source of error here.
+
+First hard data should be gathered on the noise properties of the sync pulses from each of the lasers used in these setups, to determine just how much they could contribute to the error. Using this information to create a probability density function of the timing error introduced for a given photon measurement could then be incorporated into a more precise formulation of the PSF of the detector system and allow for clearer analysis of the data quality. Furthermore, identification of phase noise in the electrical signal as the dominant noise source allows focus to be given to that issue to reduce its impact by finding solutions such as shortening the sync pulse cable, or finding an optical synchronization method that is less susceptible to variation.
+
+To verify the bounce times of theorized bounce paths, it would be beneficial to intentionally create back-reflection situations with known traversal lengths to see how accurately the device can measure distance as well. For all measurements the setup has assumed to have been properly calibrated in time, however the accuracy of this data is not yet known, and the precision of the distance measurement would help in establishing this.
+
+Indirectly related to photon counting is the future use of an autocorrelator, which was attempted unsuccesfully this semester due to hardware issues. An autocorrelator's precision at very small time-scales allows it to accurately measure a pulse shape, and therefore we can validate our photon-counting pulse shape and FWHM via this apparatus. This is also helpful as the laser pulse is assumed based on performance specifications to be a gaussian pulse, however the autocorrelator would help to experimentally establish that fact as well as its exact pulse length, waveform shape, and spectral content.
+
+Reccomendations going forward as a result of these experiments are all related to noise reduction. It appears that the most important factors in reducing error and noise are reduction of ambient light arriving at the SPAD, removal of any possible back reflection sources, minimizing phase noise in electrical sync line.
 
 \section{Literature Review}
-\subsection{Photon Counting Paper AO1984}
+\subsection{Phase and amplitude recovery from bispectra}
 
-This paper discusses a computational method of signal reconstruction and phase recovery using the Fourier transform of the triple-correlation of a signal, the bi-spectra. The bi-spectra is important as it may be gained via a Hanbury-Brown-Twiss interferometer setup, which then can be fed through this algorithm to gain the original signal.
+This paper discusses a computational method of signal reconstruction and phase recovery using the Fourier transform of the triple-correlation of a signal, the bi-spectra \cite{Bartelt:84}. The bi-spectra is important as it may be gained via a Hanbury-Brown-Twiss interferometer setup, which then can be fed through this algorithm to gain the original signal.
 
 The triple correlation of a signal is simply an extension of the familiar correlation function into 2 dimensions.
 
 \[ 
 R_{fff}\left(\tau_1,\tau_2\right)=\int_{-\infty}^{\infty}f\left(t\right)f\left(t+\tau_1\right)f\left(t+\tau_2\right)dt
 \]
+
 The result of this is a 2D function, with the shifts as the parameters. An easy way to visualize this is to plot the 3 versions of f(t) above each other, and then plot the multiplication of the three below those. The integral of that bottom function is the value of the triple-correlation at that $\tau_1$,$\tau_2$. 
 
 \begin{figure}
-\centering
-\includegraphics[width=1.0\textwidth]{figures/triple_correlation.png}
-\caption{\label{fig:triple_correlation_explanation}Triple correlation pieced together.}
+     \centering
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/triple_correlation.png}
+         \caption{Triple correlation pieced together.}
+         \label{fig:triple_correlation_explanation}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.7\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/triple_correlation_img.png}
+         \caption{Triple correlation 2D function evaluation.}
+         \label{fig:triple_correlation_img}
+     \end{subfigure}
+        \caption{Triple correlation intuition and results}
+        \label{fig:triple_correlation}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.8\textwidth]{figures/triple_correlation_img.png}
-\caption{\label{fig:triple_correlation_img}Triple correlation 2D function evaluation.}
-\end{figure}
 With the bispectra being an available measurement from which to attempt to recover the original signal,  it is useful to notice that the bispectra is essentially the fourier transform of the original signal multiplied by itself with different shifts:
 
 \[T\left(x_1,x_2\right)=  \int T\left(x\right)T\left(x+x_1\right)T(x+x_2)\]
@@ -329,18 +440,22 @@ Where $\widetilde{T}(w)$ is the Fourier transform of the original signal. The pa
 
 They begin with the proof that the bispectrum is unaffected by a time shift in T, or a multiplication by a linear phase shift in the frequency domain (which are equivalent operations).
 
-\section{Conclusion \& Future work}
+\section{Conclusion}
 
-\bibliographystyle{alpha}
-\bibliography{sample}
+\printbibliography
 
-\appendix
 \newpage
+\begin{appendices}
 \section{Deconvolution MATLAB/OCTAVE script}
 \verbatiminput{deconvolution.m}
+
+\newpage
 \section{Data processing and FWHM calculation Python script}
 \verbatiminput{full_width_half_max.py}
+
+\newpage
 \section{Triple correlation example MATLAB/OCTAVE script}
 \verbatiminput{triple_correlation.m}
+\end{appendices}
 
 \end{document}
